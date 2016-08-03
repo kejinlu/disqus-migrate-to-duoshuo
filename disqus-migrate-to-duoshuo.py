@@ -7,12 +7,15 @@ def main():
     usage = "usage: %prog [options] arg"
     parser = OptionParser(usage)
     parser.add_option("-s", "--title-suffix", dest="titleSuffix", help="Thread标题的固定后缀，方便在转换的时候进行删除")
+    parser.add_option("-u", "--site-url", dest="siteURL", help="站点网址，以便排除别人拷贝你的站点导致的无用Thread数据")
+
     (options, args) = parser.parse_args()
     if len(args) != 1:
         parser.error("incorrect number of arguments")
     file_name = args[0]
 
     title_suffix = options.titleSuffix
+    site_url = options.siteURL
     xmlFile = open(file_name)
     dom = parse(xmlFile)
     thread_elements = dom.getroot().findall('{http://disqus.com}thread')
@@ -23,12 +26,14 @@ def main():
         thread = {}
         title = thread_element.find('{http://disqus.com}title').text
         link = thread_element.find('{http://disqus.com}link').text
-        if link.startswith('http://geeklu.com') and title:
+        if site_url is not None and not link.startswith(site_url):
+            continue
+        if title is not None:
             thread_key = urlparse(link).path
             thread['thread_key'] = thread_key
             if title_suffix is not None:
                 if title.endswith(title_suffix):
-                                title = title[:-len(title_suffix)]
+                    title = title[:-len(title_suffix)]
             thread['title'] = title
             thread['url'] = link
             threads.append(thread)
