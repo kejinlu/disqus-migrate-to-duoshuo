@@ -4,7 +4,7 @@ from optparse import OptionParser
 import json
 
 def main():
-    usage = "usage: %prog [options] arg"
+    usage = "usage:python3 %prog [options] file"
     parser = OptionParser(usage)
     parser.add_option("-s", "--title-suffix", dest="titleSuffix", help="Thread标题的固定后缀，方便在转换的时候进行删除")
     parser.add_option("-u", "--site-url", dest="siteURL", help="站点网址，以便排除别人拷贝你的站点导致的无用Thread数据")
