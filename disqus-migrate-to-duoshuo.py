@@ -29,9 +29,34 @@ for thread_element in thread_elements:
 post_elements = dom.getroot().findall('{http://disqus.com}post')
 posts = []
 for post_element in post_elements:
-    post = {}
-    email = post_element.find('{http://disqus.com}author/{http://disqus.com}email').text
-    print(email)
 
+    thread_id = post_element.find('{http://disqus.com}thread').get('{http://disqus.com/disqus-internals}id')
 
-#print(threads)
+    if thread_id in threads_map:
+        post = {}
+        thread = threads_map[thread_id]
+        post['thread_key'] = thread['thread_key']
+        post_key = post_element.get('{http://disqus.com/disqus-internals}id')
+        post['post_key'] = post_key
+        email = post_element.find('{http://disqus.com}author/{http://disqus.com}email').text
+        post['author_email'] = email
+        author_name = post_element.find('{http://disqus.com}author/{http://disqus.com}name').text
+        post['author_name'] = author_name
+        ip = post_element.find('{http://disqus.com}ipAddress').text
+        post['ip'] = ip
+
+        created_at = post_element.find('{http://disqus.com}createdAt').text
+        created_at = created_at.replace('T', ' ')
+        created_at = created_at.replace('Z', ' ')
+        post['created_at'] = created_at
+
+        message = post_element.find('{http://disqus.com}message').text
+        post['message'] = message
+        parent_element = post_element.find('{http://disqus.com}parent')
+        if parent_element is not None:
+            parent_key = parent_element.get('{http://disqus.com/disqus-internals}id')
+            post['parent_key'] = parent_key
+        posts.append(post)
+
+j = json.dumps({'threads':threads,'posts':posts})
+print(j)
