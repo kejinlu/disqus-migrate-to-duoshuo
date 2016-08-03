@@ -9,7 +9,7 @@
 所以转换就是将这组内容进转换。 本脚本是建立在多说以url 的path部分作为thread_key的前提下进行的。
 
 ```bash
-Usage: usage:python3 disqus-migrate-to-duoshuo.py [options] file
+Usage: python3 disqus-migrate-to-duoshuo.py [options] file
 
 Options:
   -h, --help            show this help message and exit
