@@ -9,5 +9,12 @@
 所以转换就是将这组内容进转换。 本脚本是建立在多说以url 的path部分作为thread_key的前提下进行的。
 
 ```bash
+Usage: usage:python3 disqus-migrate-to-duoshuo.py [options] file
 
+Options:
+  -h, --help            show this help message and exit
+  -s TITLESUFFIX, --title-suffix=TITLESUFFIX
+                        Thread标题的固定后缀，方便在转换的时候进行删除
+  -u SITEURL, --site-url=SITEURL
+                        站点网址，以便排除别人拷贝你的站点导致的无用Thread数据
 ```
